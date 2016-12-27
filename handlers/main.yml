@@ -1,0 +1,8 @@
+---
+# handlers file for hpgen8
+
+- name: restart libvirt
+  service: name=libvirtd state=restarted
+
+- name: restart network
+  service: name=network state=restarted

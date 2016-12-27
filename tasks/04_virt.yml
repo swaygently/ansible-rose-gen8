@@ -1,0 +1,29 @@
+---
+
+- yum: name={{ item }} state=present
+  with_items:
+    - pwgen
+    - qemu-kvm
+    - libvirt
+    - virt-install
+
+- lineinfile:
+    dest: /etc/libvirt/qemu.conf
+    regexp: '^user'
+    line: 'user = "root"'
+    state: present
+  notify: restart libvirt
+
+- lineinfile:
+    dest: /etc/libvirt/qemu.conf
+    regexp: '^group'
+    line: 'group = "root"'
+    state: present
+  notify: restart libvirt
+
+- meta: flush_handlers
+
+- name: Ensuring libvirtd is running
+  service: name=libvirtd state=started enabled=yes
+
+- script: files/virt.sh

@@ -1,0 +1,7 @@
+---
+# tasks file for hpgen8
+
+- include: 01_common.yml
+- include: 02_hp.yml
+- include: 03_network.yml
+- include: 04_virt.yml

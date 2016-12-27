@@ -1,0 +1,38 @@
+---
+# http://downloads.linux.hpe.com/SDR/
+# Management Component Pack for ProLiant
+# Service Pack for ProLiant
+
+- name: SPP repo
+  script: files/add_repo.sh -v -d rhel -r 7.2 spp
+  args:
+    creates: /etc/yum.repos.d/HP-spp.repo
+
+- name: MCP repo
+  script: files/add_repo.sh -v -r 7.2 mcp
+  args:
+    creates: /etc/yum.repos.d/HP-mcp.repo
+
+- name: Installing Management Component Pack
+  yum: name={{ item }} state=latest
+  with_items:
+    - smartmontools
+    - hpsmh
+    - hp-ams
+    - hp-health
+    - hp-snmp-agents
+    - hp-smh-templates
+    - hpdiags
+    - hponcfg
+    - hpssa
+    - hpssacli
+    - hpssaducli
+
+- service: name={{ item }} state=started enabled=yes
+  with_items:
+    - hp-snmp-agents
+    - hp-ams
+    - hp-health
+    - hp-asrd
+    - hpssad
+    - hpsmhd

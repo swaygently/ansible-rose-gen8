@@ -1,0 +1,24 @@
+---
+
+- name: Ensuring NetworkManager disabled
+  service: name=NetworkManager state=stopped enabled=no
+
+- name: Configuring network bridge
+  template: src=ifcfg-{{ item }}.j2 dest=/etc/sysconfig/network-scripts/ifcfg-{{ item }}
+  with_items:
+    - br0
+    - br1
+  notify: restart network
+
+- name: Configuring WAN interface
+  template: src=ifcfg-wan.j2 dest=/etc/sysconfig/network-scripts/ifcfg-{{ wan_dev }}
+  notify: restart network
+
+- name: Configuring LAN interface
+  template: src=ifcfg-lan.j2 dest=/etc/sysconfig/network-scripts/ifcfg-{{ lan_dev }}
+  notify: restart network
+
+- meta: flush_handlers
+
+- name: Ensuring network enabled
+  service: name=network state=started enabled=yes

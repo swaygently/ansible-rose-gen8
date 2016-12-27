@@ -1,0 +1,26 @@
+---
+
+- name: set timezone to Asia/Shanghai
+  timezone:
+    name: Asia/Shanghai
+
+- yum: name={{ item }} state=latest
+  with_items:
+    - redhat-lsb
+    - wget
+    - ntpdate
+    - epel-release
+
+- name: sync time
+  shell: ntpdate time.asia.apple.com && hwclock -w
+
+- name: Ensuring selinux disabled
+  selinux: state=disabled
+  ignore_errors: yes
+
+- name: Ensuring firewalld stopped
+  service: name=firewalld state=stopped enabled=no
+  ignore_errors: yes
+
+- name: update system
+  shell: yum update -y

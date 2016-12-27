@@ -1,0 +1,46 @@
+---
+# defaults file for hpgen8
+
+gen8_wan_dev: "eno1"
+gen8_lan_dev: "eno2"
+gen8_lan_ipaddr: "192.168.100.254"
+gen8_lan_netmask: "255.255.255.0"
+
+gen8_opnsense_iso : "/root/OPNsense-16.7-OpenSSL-cdrom-amd64.iso"
+gen8_ubuntu_iso: "/root/ubuntu-16.04.1-server-amd64.iso"
+gen8_centos_iso: "/root/CentOS-7-x86_64-Minimal-1611.iso"
+
+gen8_virtual_machines:
+  01_router:
+    cdrom: "/root/OPNsense-16.7-OpenSSL-cdrom-amd64.iso"
+    os-variant: "freebsd10.3"
+    vcpus: 1
+    memory: 1024
+    disk_size: 10
+    vnc_port: 5901
+    vnc_pass:
+    network:
+      - bridge=br0,model=virtio
+      - bridge=br1,model=virtio
+
+  02_portal:
+    cdrom: "/root/CentOS-7-x86_64-Minimal-1611.iso"
+    os-variant: "freebsd10.3"
+    vcpus: 1
+    memory: 1024
+    disk_size: 20
+    vnc_port: 5902
+    vnc_pass:
+    network:
+      - bridge=br1,model=virtio
+
+  03_htpc:
+    cdrom: "/root/ubuntu-16.04.1-server-amd64.iso"
+    os-variant: "freebsd10.3"
+    vcpus: 1
+    memory: 1024
+    disk_size: 20
+    vnc_port: 5903
+    vnc_pass:
+    network:
+      - bridge=br1,model=virtio
